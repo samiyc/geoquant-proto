@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+.env
+
+# VS Code settings
+.vscode/
+
+# Database locale (on ne veut pas versionner nos données de test pour l'instant)
+*.db
+*.duckdb
