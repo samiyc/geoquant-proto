@@ -1,0 +1,8 @@
+streamlit
+pandas
+yfinance
+duckdb
+plotly
+requests
+feedparser
+watchdog

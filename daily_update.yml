@@ -1,0 +1,39 @@
+name: Daily Market Bot
+
+# Déclencheurs
+on:
+  schedule:
+    # Cron : Tous les jours à 08:00 UTC
+    - cron: '0 8 * * *'
+  workflow_dispatch: # Permet de lancer manuellement le bot depuis l'interface GitHub pour tester
+
+permissions:
+  contents: write # Important : donne le droit au robot d'écrire dans le repo
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Récupération du code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Configuration Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: 📦 Installation des dépendances
+      run: |
+        pip install -r requirements.txt
+
+    - name: 🤖 Lancement du Bot
+      run: python bot.py
+
+    - name: 💾 Commit et Push si changements
+      run: |
+        git config --global user.name 'GeoQuant Bot'
+        git config --global user.email 'bot@geoquant.local'
+        git add data/market_history.csv
+        # On ne commit que s'il y a des changements (sinon git commit échoue)
+        git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Daily Data Update" && git push)
